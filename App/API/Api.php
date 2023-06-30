@@ -88,14 +88,14 @@ class API extends Database implements databaseInterface
         return parent::query($consulta);
     }
 
-    final public static function Auth($tr): string|bool
+    final public static function Auth($token): bool
     {
-        $string = Database::query("SELECT token FROM tokens WHERE token = '$tr'; ");
-        $tr = false;
+        $string = Database::query("SELECT token FROM tokens WHERE token = '$token'; ");
+        $bool = false;
         if ($string->num_rows > 0) {
-            $tr = true;
+            $bool = true;
         }
-        return $tr;
+        return $bool;
     }
 
     final public static function Upload(): bool|string
