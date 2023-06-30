@@ -12,7 +12,7 @@ interface databaseInterface
 {
     public static function getMethod(): string;
     public static function setHeaders(): void;
-    public static function getData($consulta): void;
+    public static function getData($consulta): array;
     public static function getQueryString(): object;
     public static function Auth($tr): string|bool;
     public static function Upload(): bool|string;
@@ -94,9 +94,9 @@ class API extends Database implements databaseInterface
     {
         return User::getUserByEmail($email);
     }
-    final public static function getData($consulta): bool
+    final public static function getData($consulta):array
     {
-        return User::getUserByEmail($email);
+        return parent::query($consulta);
     }
 
     final public static function Auth($tr): string|bool
