@@ -13,12 +13,6 @@ interface databaseInterface
     public static function getMethod(): string;
     public static function setHeaders(): void;
     public static function getQueryString(): object;
-    public static function getBancos(): array;
-    public static function getIpri($data): array;
-    public static function getCoas(): array;
-    public static function getCatastros(): array;
-    public static function getCoasID($id): array;
-    public static function getBancosID($id): array;
     public static function Auth($tr): string|bool;
     public static function Upload(): bool|string;
     public static function setValues($tabla, $data, $primaria): bool;
@@ -46,38 +40,22 @@ class API extends Database implements databaseInterface
 
     final public static function getQueryString(): object
     {
-
-        $vars = (object) 
-            [
-                "vars" => []
-            ];
-
+        $vars = (object) [  "vars" => [] ];
         if (isset($_SERVER['QUERY_STRING'])) {
             $queryString = str_replace('&&', '&', $_SERVER['QUERY_STRING']);
             $queryString = explode('&', $queryString);
-
             for ($i = 0; $i < count($queryString); $i++) {
-
                 $params = explode('=', $queryString[$i]);
-
                 if (isset($params[1])) {
-
                     $vars->vars[] = [
-
                         "name" => $params[0],
-
                         "value" => $params[1]
-
                     ];
-
                 }
-
             }
-
         }
         return $vars;
     }
-
 
     final public static function setValues($tabla, $data, $primaria): bool
     {
@@ -116,51 +94,8 @@ class API extends Database implements databaseInterface
         return User::getUserByEmail($email);
     }
 
-    final public static function getIpri($data): array
-    {
-        return User::getIpri($data);
-    }
-
-    final public static function getBancos(): array
-    {
-        return User::getBancos();
-    }
-
-    final public static function getCoas(): array
-    {
-        return User::getCoas();
-    }
-
-    final public static function getCatastros(): array
-    {
-        return User::getCatastros();
-    }
-
-    final public static function getBancosID($id): array
-    {
-        return User::getBancosID($id);
-    }
-
-    final public static function getCoasID($id): array
-    {
-        return User::getCoasID($id);
-    }
-    final public static function getProvinces(): array
-    {
-        return User::getProvinces();
-    }
-    final public static function getUsers(): array
-    {
-        return User::getUsers();
-    }
-    final public static function getConceptos(): array
-    {
-        return User::getConceptos();
-    }
-
     final public static function Auth($tr): string|bool
     {
-
         $string = Database::query("SELECT token FROM tokens WHERE token = '$tr'; ");
         $tr = false;
         if ($string->num_rows > 0) {
