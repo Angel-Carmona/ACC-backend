@@ -16,9 +16,8 @@ interface databaseInterface
     public static function getQueryString(): object;
     public static function Auth($tr): string|bool;
     public static function Upload(): bool|string;
-    public static function setValues($tabla, $data, $primaria): bool;
+    public static function setValues($tabla, $data, $primaria , $acction = "UPDATE"): bool;
     public static function getUserByEmail($email): bool;
-    public static function insertValues($tabla, $data, $primaria): bool;
 }
 
 
@@ -58,9 +57,9 @@ class API extends Database implements databaseInterface
         return $vars;
     }
 
-    final public static function setValues($tabla, $data, $primaria): bool
+    final public static function setValues($tabla, $data, $primaria, $acction): bool
     {
-        $quqery = "UPDATE `$tabla` SET ";
+        $quqery = $acction . " `$tabla` SET ";
         $id = 0;
         foreach ($data as $key => $datos) {
             if (!in_array($datos->name, ["editar", "insertar", "eliminar"])) {
@@ -73,21 +72,11 @@ class API extends Database implements databaseInterface
         }
         $quqery = substr($quqery, 0, strlen($quqery) - 1);
         $quqery .= " WHERE `$primaria` = $id;";
-        return User::setValues($quqery);
-    }
-
-    final public static function insertValues($tabla, $data, $primaria): bool
-    {
-        $quqery = "INSERT INTO `$tabla` SET `$primaria` = NULL, ";
-        foreach ($data as $key => $datos) {
-            if (!in_array($datos->name, ["editar", "insertar", "eliminar"])) {
-                if ($datos->name !== $primaria) {
-                    $quqery .= "`$datos->name` = '$datos->value' ,";
-                }
-            }
+        try{
+            return User::setValues($quqery);
+        }catch (Exception $th){
+             return false;
         }
-        $quqery = substr($quqery, 0, strlen($quqery) - 1) . ';';
-        return User::insertValues($quqery);
     }
 
     final public static function getUserByEmail($email): bool
