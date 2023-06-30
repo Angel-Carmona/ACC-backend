@@ -1,5 +1,5 @@
 {
-    "name": "backendacc",
+    "name": "angel_carmona/backend",
     "require": {
         "phpmailer/phpmailer":"^6.8.0"
     },
