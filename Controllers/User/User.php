@@ -189,7 +189,6 @@ class User extends Database
     }
     public static function setValues($query)
     {
-
         return self::query(
             $query
         );
@@ -201,7 +200,6 @@ class User extends Database
             $query
         );
     }
-
 
     public static function getUsers()
     {
@@ -226,100 +224,6 @@ class User extends Database
         }
         return $res;
     }
-    public static function getCatastros()
-    {
-        $res = [];
-        $datos = self::query("SELECT 
-        ca.id_catastro_relations as id_catastro_relations ,
-        ca.catastro_euros as catastro_euros ,
-        (SELECT id_provincia   FROM provincias WHERE provincias.id_provincia  = ca.id_provincia) as id_provincia,
-        (SELECT id_concepto    FROM conceptos co WHERE co.id_concepto = ca.id_concepto) as id_concepto ,
-        (SELECT ipri           FROM catastro_valores WHERE catastro_valores.id_provincia = ca.id_provincia) as ipri 
-        FROM catastros_relations ca");
-        if($datos->num_rows > 0) {
-            while($row = $datos->fetch_assoc()) {
-                $res[] = $row;
-            }
-        }
-        return $res;
-    }
-    public static function getConceptos()
-    {
-        $res = [];
-        $datos = self::query("SELECT * FROM conceptos");
-        if($datos->num_rows > 0) {
-            while($row = $datos->fetch_assoc()) {
-                $res[] = $row;
-            }
-        }
-        return $res;
-    }
-    public static function getProvinces()
-    {
-        $res = [];
-        $datos = self::query("SELECT * FROM provincias");
-        if($datos->num_rows > 0) {
-            while($row = $datos->fetch_assoc()) {
-                $res[] = $row;
-            }
-        }
-        return $res;
-    }
-    public static function getCoas()
-    {
-        $res = [];
-        $datos = self::query("SELECT 
-        co.id_coa_relations as id_coa_relations ,
-        co.coa_euros as coa_euros ,
-        (SELECT id_provincia   FROM provincias  WHERE provincias.id_provincia  = co.id_provincia) as id_provincia,
-        (SELECT id_concepto    FROM conceptos WHERE conceptos.id_concepto = co.id_concepto) as id_concepto ,
-        (SELECT ipri           FROM coa_valores WHERE coa_valores.id_provincia = co.id_provincia) as ipri
-        FROM coa_relations co");
-        if($datos->num_rows > 0) {
-            while($row = $datos->fetch_assoc()) {
-                $res[] = $row;
-            }
-        }
-        return $res;
-    }
-
-
-    public static function getBancos()
-    {
-        $res = [];
-        $datos = self::query("SELECT 
-        br.id_banco_relations as id_banco_relations ,
-        br.banco_euros as banco_euros ,
-        (SELECT id_provincia   FROM provincias  WHERE provincias.id_provincia  = br.id_provincia) as id_provincia,
-        (SELECT id_concepto    FROM conceptos co WHERE co.id_concepto = br.id_concepto) as id_concepto ,
-        (SELECT ipri FROM banco_valores WHERE banco_valores.id_provincia = br.id_provincia) as ipri 
-        FROM bancos_relations br");
-        if($datos->num_rows > 0) {
-            while($row = $datos->fetch_assoc()) {
-                $res[] = $row;
-            }
-        }
-        return $res;
-    }
-    public static function getIpri($datos)
-    {
-        $res = [];
-        $campo = substr($datos->tabla, 0, strlen($datos->tabla) - 1);
-        if ($campo == "co") {
-            $campo = "coa";
-        }
-        $datos = self::query("SELECT 
-        ipri as ipri, 
-        (SELECT ". $campo."_euros FROM ".$datos->tabla."_relations WHERE id_concepto=".$datos->conceptoId." AND id_provincia=".$datos->provinciaId.") as ". $campo."_euros  
-        FROM ".$campo."_valores 
-        WHERE ".$campo."_valores.id_provincia=".$datos->provinciaId);
-        if($datos->num_rows > 0) {
-            while($row = $datos->fetch_assoc()) {
-                $res[] = $row;
-            }
-        }
-        return $res;
-    }
 
     public static function getMyUser()
     {
@@ -332,6 +236,7 @@ class User extends Database
         }
         return $res;
     }
+    
     public static function getToken($getToken)
     {
         $res = [];
@@ -346,39 +251,11 @@ class User extends Database
         return  $resultados;
     }
 
-    public static function getBancosID($id)
-    {
-        $res = [];
-        $datos = self::query("SELECT 
-        br.id_banco_relations as id ,
-        br.banco_euros as banco_euros ,
-        (SELECT id_provincia   FROM provincias  WHERE provincias.id_provincia  = br.id_provincia) as id_provincia,
-        (SELECT id_concepto    FROM conceptos co WHERE co.id_concepto = br.id_concepto) as id_concepto ,
-        (SELECT ipri FROM banco_valores WHERE banco_valores.id_provincia = br.id_provincia) as ipri ,
-        (SELECT fecha FROM banco_valores WHERE banco_valores.id_provincia = br.id_provincia) as fecha_baremo ,
-        (SELECT ipri_acumulado FROM banco_valores WHERE banco_valores.id_provincia = br.id_provincia) as ipri_acumulado 
-        FROM bancos_relations br 
-        WHERE br.id_banco_relations = '".$id."'; ");
 
-        if($datos->num_rows > 0) {
-            while($row = $datos->fetch_assoc()) {
-                $res[] = $row;
-            }
-        }
-        return $res;
-    }
-    public static function getCoasID($id)
+    public static function getdata($query)
     {
-        $res = [];
-        $datos = self::query("SELECT 
-        co.id_coa_relations as id_coa_relations ,
-        co.coa_euros as coa_euros ,
-        (SELECT id_provincia   FROM provincias  WHERE provincias.id_provincia  = co.id_provincia) as id_provincia,
-        (SELECT id_concepto    FROM conceptos WHERE conceptos.id_concepto = co.id_concepto) as id_concepto ,
-        (SELECT ipri           FROM coa_valores WHERE coa_valores.id_provincia = co.id_provincia) as ipri
-        FROM coa_relations co 
-        WHERE co.id_coa_relations = '".$id."'; ");
-
+       $res = [];
+        $datos = self::query($query);
         if($datos->num_rows > 0) {
             while($row = $datos->fetch_assoc()) {
                 $res[] = $row;
