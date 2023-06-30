@@ -1,0 +1,27 @@
+{
+    "name": "backend",
+    "require": {
+        "phpmailer/phpmailer":"^6.8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Angel\\Excel\\": "src/",
+            "App\\Globals\\" : "App/Globals/",
+            "App\\API\\" : "App/API/",
+            "Models\\Database\\" : "Models/Database/",
+            "Models\\User\\" : "Models/User/",
+            "Models\\Dbstruct\\" : "Models/Dbstruct/",
+            "Controllers\\Api\\" : "Controllers/Api/",
+            "Controllers\\Views\\" : "Controllers/Views/",
+            "Controllers\\Session\\" : "Controllers/Session/",
+            "Controllers\\Error\\" : "Controllers/Error/",
+            "Controllers\\User\\" : "Controllers/User/",
+            "Controllers\\System\\" : "Controllers/System/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Angel Carmona"
+        }
+    ]
+}
