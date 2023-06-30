@@ -1,5 +1,5 @@
 {
-    "name": "accbackend",
+    "name": "backendacc",
     "require": {
         "phpmailer/phpmailer":"^6.8.0"
     },
